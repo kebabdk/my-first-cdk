@@ -13,24 +13,21 @@ export class MyFirstCdkStack extends cdk.Stack {
       description: 'Name of the S3 bucket to create'
       })
 
-      const bucketKey = new cdk.CfnParameter(this, 'bucketKey', {
+    const bucketKey = new cdk.CfnParameter(this, 'bucketKey', {
         type: 'String',
         default: '',
         description: 'Name of the S3 bucket key to create'
         })
 
-      const bucket = s3.Bucket.fromBucketName(this, 'pipeline-bucket', bucketName.valueAsString)  
-
-      
-
+    const bucket = s3.Bucket.fromBucketName(this, 'pipeline-bucket', bucketName.valueAsString);
 
     new lambda.Function(this, 'lambdaFunction', {
-      functionName: 'first-cdk-lambda',
-      code: new lambda.AssetCode('src'),
-      handler: 'index.handler',
-      runtime: lambda.Runtime.NODEJS_16_X,
-      memorySize: 128  
-    })
+          functionName: 'first-cdk-lambda',
+          code: lambda.Code.fromBucket( bucket, bucketKey.valueAsString),
+          handler: 'index.handler',
+          runtime: lambda.Runtime.NODEJS_16_X,
+          memorySize: 128
+        })
   }
 }
 //Test

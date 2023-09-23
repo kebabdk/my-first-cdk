@@ -30,4 +30,3 @@ export class MyFirstCdkStack extends cdk.Stack {
         })
   }
 }
-//Test
